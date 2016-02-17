@@ -1,9 +1,9 @@
 ;****************** main.s ***************
-; Program written by: ***Your Names**update this***
-; Date Created: 1/22/2016 
-; Last Modified: 1/22/2016 
-; Section ***Tuesday 1-2***update this***
-; Instructor: ***Ramesh Yerraballi**update this***
+; Program written by: Megan Cooper
+; Date Created: 2/12/2016 
+; Last Modified: 2/12/2016 
+; Section Wednesday 4-5
+; Instructor: Ramesh Yerraballi
 ; Lab number: 2
 ; Brief description of the program
 ; The overall objective of this system an interactive alarm
@@ -90,9 +90,30 @@ Clear  LDR  R1,[R2]
 
        B    loop
        
-Delay  MOV  R8, #0x58800
-wait   SUBS R8, R8, #0x01
-       BNE  wait
+Delay  MOV  R8, #50000
+wait1  SUBS R8, #1
+       BNE  wait1
+	   MOV  R8, #50000
+wait2  SUBS R8, #1
+       BNE  wait2
+	   MOV  R8, #50000
+wait3  SUBS R8, #1
+       BNE  wait3
+	   MOV  R8, #50000
+wait4  SUBS R8, #1
+       BNE  wait4
+	   MOV  R8, #50000
+wait5  SUBS R8, #1
+       BNE  wait5
+	   MOV  R8, #50000
+wait6  SUBS R8, #1
+       BNE  wait6
+	   MOV  R8, #50000
+wait7  SUBS R8, #1
+       BNE  wait7
+	   MOV  R8, #50000
+wait8  SUBS R8, #1
+       BNE  wait8
 	   BX   LR 
 
        ALIGN      ; make sure the end of this section is aligned
