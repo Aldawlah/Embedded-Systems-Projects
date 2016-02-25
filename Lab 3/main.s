@@ -1,9 +1,9 @@
 ;****************** main.s ***************
-; Program written by: ***Your Names**update this***
+; Program written by: Megan Cooper
 ; Date Created: 1/22/2016 
 ; Last Modified: 1/22/2016 
-; Section ***Tuesday 1-2***update this***
-; Instructor: ***Ramesh Yerraballi**update this***
+; Section Wednesday 4-5
+; Instructor: Ramesh Yerraballi
 ; Lab number: 3
 ; Brief description of the program
 ;   If the switch is presses, the LED toggles at 8 Hz
