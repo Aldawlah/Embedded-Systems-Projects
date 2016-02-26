@@ -41,67 +41,67 @@ PE0                     EQU   0x40024004
        EXPORT  Start
 Start
  ; TExaS_Init sets bus clock at 80 MHz
-	BL  TExaS_Init ; voltmeter, scope on PD3
+    BL  TExaS_Init ; voltmeter, scope on PD3
 ; you initialize PE1 PE0
     LDR R0,= SYSCTL_RCGCGPIO_R
     LDR R1,[R0]
-	ORR R1,#0x10
-	STR R1,[R0]
+    ORR R1,#0x10
+    STR R1,[R0]
 	   
-	NOP
-	NOP
+    NOP
+    NOP
 	   
-	LDR R0,= GPIO_PORTE_DIR_R
-	LDR R1,[R0]
-	BIC R1,#0x02
-	ORR R1,#0x01
-	STR R1,[R0]
+    LDR R0,= GPIO_PORTE_DIR_R
+    LDR R1,[R0]
+    BIC R1,#0x02
+    ORR R1,#0x01
+    STR R1,[R0]
 	   
-	LDR R0,= GPIO_PORTE_AFSEL_R
-	LDR R1,[R0]
-	BIC R1,#0x03
-	STR R1,[R0]
+    LDR R0,= GPIO_PORTE_AFSEL_R
+    LDR R1,[R0]
+    BIC R1,#0x03
+    STR R1,[R0]
 	   
-	LDR R0,= GPIO_PORTE_DEN_R
-	LDR R1,[R0]
-	ORR R1,#0x03
-	STR R1,[R0]
+    LDR R0,= GPIO_PORTE_DEN_R
+    LDR R1,[R0]
+    ORR R1,#0x03
+    STR R1,[R0]
 
 
     CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
 	  
-	LDR R0,= PE0
-	LDR R1,[R0]
-	ORR R1,#0xFF ; turns the LED on
-	STR R1,[R0]
+    LDR R0,= PE0
+    LDR R1,[R0]
+    ORR R1,#0xFF ; turns the LED on
+    STR R1,[R0]
 
 loop  
 ; you input output delay
-	BL Delay 
+    BL Delay 
        
 	   
     LDR  R0,= PE1
-	LDR  R2,= PE0
+    LDR  R2,= PE0
 	   
-	LDR  R1,[R0]       
-	CMP  R1,#0
-	BNE  Toggle ; Goes to Toggle if PE1 = 1
-	BEQ  StayOn ; Goes to StayOn if PE1 = 0
+    LDR  R1,[R0]       
+    CMP  R1,#0
+    BNE  Toggle ; Goes to Toggle if PE1 = 1
+    BEQ  StayOn ; Goes to StayOn if PE1 = 0
 	   
 	   
 Toggle 
 ; Flips PE0 if the switch is pressed
-	LDR  R1,[R2]
-	EOR  R1, R1, #0xFF
-	STR  R1,[R2]
-	B    loop
+    LDR  R1,[R2]
+    EOR  R1, R1, #0xFF
+    STR  R1,[R2]
+    B    loop
 	   
 StayOn 
 ; Clears PE1 and returns to loop
     LDR  R1,[R2]
     ORR  R1,#0xFF
-	STR  R1,[R2]
-	B    loop
+    STR  R1,[R2]
+    B    loop
 	   
 Delay  
 ; Implements a 62ms long delay
@@ -112,8 +112,8 @@ wait
     SUBS R8, #1
     BNE  wait 
     SUBS R7, #1
-	BNE  Subt
-	BX   LR
+    BNE  Subt
+    BX   LR
 
     ALIGN      ; make sure the end of this section is aligned
     END        ; end of file
