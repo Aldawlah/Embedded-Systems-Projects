@@ -41,7 +41,7 @@ NVIC_ST_RELOAD_R        EQU 0xE000E014
 NVIC_ST_CURRENT_R       EQU 0xE000E018
 			THUMB
 			AREA    DATA, ALIGN=4
-SIZE    	EQU    50
+SIZE    		EQU    50
 ;You MUST use these two buffers and two variables
 ;You MUST not change their names
 ;These names MUST be exported
@@ -126,17 +126,17 @@ Start
 			MOV    	R5,#0xC8	; Counter for Debug_Capture
 loop
 			
-DC_loop		CMP     R5, #0x0
+DC_loop			CMP     R5, #0x0
 			BEQ     full
 			BL  	Debug_Capture
 			SUB   	R5, #0x04
 			
-full		BL		Delay       ; 2480062 instructions
+full			BL	Delay       ; 2480062 instructions
 ; Heartbeat
 			LDR     R3,= GPIO_PORTF_DATA_R
-            LDR     R4, [R3]
-            EOR     R4, #0xFF
-            STR     R4, [R3]    ; 4 instructions
+            		LDR     R4, [R3]
+            		EOR     R4, #0xFF
+            		STR     R4, [R3]    ; 4 instructions
          				   
 			LDR  	R0,= SWITCH
 			LDR  	R2,= LED    ; 2 instructions
@@ -158,21 +158,21 @@ Toggle
 	   
 StayOn 
 ; Clears PE1 and returns to loop
-    LDR  R1,[R2]
-    ORR  R1,#0xFF
+	LDR  R1,[R2]
+	ORR  R1,#0xFF
 	STR  R1,[R2]
 	B    loop; 4 instructions
 	
 ; Delay	   
 Delay  
 ; Implements a 62ms long delay
-    MOV  R7, #20
+    	MOV  R7, #20
 Subt   
-    MOV  R8, #62000
+    	MOV  R8, #62000
 wait   
-    SUBS R8, #1
-    BNE  wait        ; 2*62000=124000 instructions
-    SUBS R7, #1
+    	SUBS R8, #1
+	BNE  wait        ; 2*62000=124000 instructions
+    	SUBS R7, #1
 	BNE  Subt        ; (124000+3)*20 = 2480060 instructions
 	BX   LR          ; 2480060 +2=2480062 instructions
 
@@ -190,31 +190,31 @@ Debug_Init
 			LDR		R1, =DataBuffer
 			MOV     R3, R1
 			ADD     R3, #0xC8
-			MOV		R2,	#0xFFFFFFFF			
-notDone1	STR		R2,	[R1]        ; Store 0xFFFFFFFF as the first element of DataBuffer
+			MOV	R2, #0xFFFFFFFF			
+notDone1	STR		R2, [R1]        ; Store 0xFFFFFFFF as the first element of DataBuffer
 			ADD     R1, #0x04
 			CMP     R1, R3
 			BNE     notDone1
 
-            LDR     R1, =DataBuffer
-			LDR		R2, =DataPt
-			STR		R1, [R2]        ; Make DataPt point to the start of DataBuffer
+            		LDR     R1, =DataBuffer
+			LDR	R2, =DataPt
+			STR	R1, [R2]        ; Make DataPt point to the start of DataBuffer
 			
-			LDR		R1, =TimeBuffer
+			LDR	R1, =TimeBuffer
 			MOV     R3, R1
 			ADD     R3, #0xC8
-			MOV		R2,	#0xFFFFFFFF
-notDone2	STR		R2,	[R1]        ; Store 0xFFFFFFFF as the first element of TimeBuffer
+			MOV	R2, #0xFFFFFFFF
+notDone2       		STR	R2, [R1]        ; Store 0xFFFFFFFF as the first element of TimeBuffer
 			ADD     R1, #0x04
 			CMP     R1, R3
 			BNE     notDone2
 			
 			LDR     R1, =TimeBuffer
-			LDR		R2,	=TimePt
-			STR		R1, [R2]        ; Make TimePt point to the start of TimeBuffer
+			LDR	R2, =TimePt
+			STR	R1, [R2]        ; Make TimePt point to the start of TimeBuffer
 			
-			BL		SysTick_Init    ; Init SysTick
-			POP		{R1-R3, LR}     ; Pop stored values back into registers
+			BL	SysTick_Init    ; Init SysTick
+			POP	{R1-R3, LR}     ; Pop stored values back into registers
 			BX      LR
 
 ;------------Debug_Capture------------
@@ -226,38 +226,38 @@ notDone2	STR		R2,	[R1]        ; Store 0xFFFFFFFF as the first element of TimeBuf
 Debug_Capture
 			PUSH	{R0-R8,LR}   ; Save used registers to the Stack
 			
-			LDR		R0,	=DataPt
-			LDR		R2, [R0]     ; R2 = pointer to DataBuffer
+			LDR	R0, =DataPt
+			LDR	R2, [R0]     ; R2 = pointer to DataBuffer
 
 			
-			LDR		R5,	=TimePt
-			LDR		R7, [R5]     ; R7 = pointer to TimeBuffer
+			LDR	R5, =TimePt
+			LDR	R7, [R5]     ; R7 = pointer to TimeBuffer
 
 			
-			LDR		R3, =SWITCH 
-			LDR		R3, [R3]     ; R3 = SWITCH value
-			LSL		R3, #3
-			LDR		R4, =LED
-			LDR		R4, [R4]     ; R4 = LED value
-			ADD		R4, R3, R4   ; combine LED and SWITCH into one word
-			STR		R4, [R2]     ; Store in DataBuffer
+			LDR	R3, =SWITCH 
+			LDR	R3, [R3]     ; R3 = SWITCH value
+			LSL	R3, #3
+			LDR	R4, =LED
+			LDR	R4, [R4]     ; R4 = LED value
+			ADD	R4, R3, R4   ; combine LED and SWITCH into one word
+			STR	R4, [R2]     ; Store in DataBuffer
 
-            ADD		R2, #0x04
-			STR		R2, [R0]     ; Increment DataPt
-			LDR		R8, =NVIC_ST_CURRENT_R
-			LDR		R8, [R8]
-			STR		R8, [R7]     ; Store time in TimeBuffer
-			ADD		R7, #0x04
-			STR		R7, [R5]     ; Increment TimePt
+            		ADD	R2, #0x04
+			STR	R2, [R0]     ; Increment DataPt
+			LDR	R8, =NVIC_ST_CURRENT_R
+			LDR	R8, [R8]
+			STR	R8, [R7]     ; Store time in TimeBuffer
+			ADD	R7, #0x04
+			STR	R7, [R5]     ; Increment TimePt
 			
-done    	POP		{R0-R8, LR}
-            BX      LR           ; 29 cycles
+done    		POP	{R0-R8, LR}
+            		BX      LR           ; 29 cycles
 			
         
 			
 
 			                      ;29*2*12.5ns = 725ns
 
-    ALIGN                         ; make sure the end of this section is aligned
-    END                           ; end of file
+    			ALIGN                         ; make sure the end of this section is aligned
+			END                           ; end of file
         
