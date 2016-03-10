@@ -8,15 +8,15 @@
 ; Brief description of the program
 ;   If the switch is presses, the LED toggles at 8 Hz
 ; Hardware connections
-;  PE1 is switch input  (1 means pressed, 0 means not pressed)
-;  PE0 is LED output  (1 activates external LED on protoboard) 
+;   PE1 is switch input  (1 means pressed, 0 means not pressed)
+;   PE0 is LED output  	 (1 activates external LED on protoboard) 
 ;Overall functionality of this system is the similar to Lab 3, with three changes:
-;1-  initialize SysTick with RELOAD 0x00FFFFFF 
-;2-  add a heartbeat to PF2 that toggles every time through loop 
-;3-  add debugging dump of input, output, and time
+;   1-  initialize SysTick with RELOAD 0x00FFFFFF 
+;   2-  add a heartbeat to PF2 that toggles every time through loop 
+;   3-  add debugging dump of input, output, and time
 ; Operation
-;	1) Make PE0 an output and make PE1 an input. 
-;	2) The system starts with the LED on (make PE0 =1). 
+;   1) Make PE0 an output and make PE1 an input. 
+;   2) The system starts with the LED on (make PE0 =1). 
 ;   3) Wait about 62 ms
 ;   4) If the switch is pressed (PE1 is 1), then toggle the LED once, else turn the LED on. 
 ;   5) Steps 3 and 4 are repeated over and over
@@ -65,7 +65,7 @@ TimePt     	SPACE  4
 
 Start 		
 ; running at 80 MHz, scope voltmeter on PD3
-            BL   	TExaS_Init  
+            	        BL   	TExaS_Init  
 ; turn on clock for Ports E and F
 			LDR 	R0,= SYSCTL_RCGCGPIO_R
 			LDR 	R1,[R0]
