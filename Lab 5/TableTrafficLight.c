@@ -1,7 +1,7 @@
 // ***** 0. Documentation Section *****
 // TableTrafficLight.c for (Lab 10 edX), Lab 5 EE319K
 // Runs on LM4F120/TM4C123
-// Program written by: Kaela Todd and Megan Cooper
+// Program written by: Megan Cooper
 // Date Created: 1/24/2015 
 // Last Modified: 3/2/2016 
 // Section Wed 4-5pm     
@@ -67,10 +67,10 @@ extern void Delay(void);
 
 // ***** 3. Subroutines Section *****
 void cDelay(unsigned short count){
-		while(count){
-			Delay();
-			count--;
-		}
+	while(count){
+		Delay();
+		count--;
+	}
 } 
 
 // Linked data structure
@@ -90,25 +90,25 @@ typedef const struct State STyp;
 #define walk2  	7
 #define on1    	8
 #define on2    	9
-#define on3		 	10
-#define	on4			11
-#define on5			12
-#define on6			13
-#define off1		14
-#define	off2		15
-#define	off3		16
-#define off4		17
-#define off5		18
-#define	off6		19
+#define on3	10
+#define	on4	11
+#define on5	12
+#define on6	13
+#define off1	14
+#define	off2	15
+#define	off3	16
+#define off4	17
+#define off5	18
+#define	off6	19
 STyp FSM[20] = {
- {0x4C,	20,	{goN,waitN2,waitN1,waitN2,goN,waitN2,waitN1,waitN2}},  //20
- {0x4A, 10,	{goE,walk2,goE,walk2,goE,walk2,goE,walk2}},						 //10
- {0x4A,	10,	{walk2,walk2,walk2,walk2,walk2,walk2,walk2,walk2}},    //10
- {0x61, 20, {goE,waitE2,goE,waitE2,waitE1,waitE2,waitE1,waitE2}},  //20
- {0x51, 10, {goN,walk1,goN,walk1,goN,walk1,goN,walk1}},						 //10
- {0x51, 10, {walk1,walk1,walk1,walk1,walk1,walk1,walk1,walk1}},	   //10
- {0x89, 20, {on1,walk1,on1,walk1,on1,walk1,on1,walk1}},						 //20
- {0x89, 20, {on4,walk2,on4,walk2,on4,walk2,on4,walk2}},						 //20
+ {0x4C,	20, {goN,waitN2,waitN1,waitN2,goN,waitN2,waitN1,waitN2}},  
+ {0x4A, 10, {goE,walk2,goE,walk2,goE,walk2,goE,walk2}},						 
+ {0x4A,	10, {walk2,walk2,walk2,walk2,walk2,walk2,walk2,walk2}},    
+ {0x61, 20, {goE,waitE2,goE,waitE2,waitE1,waitE2,waitE1,waitE2}},  
+ {0x51, 10, {goN,walk1,goN,walk1,goN,walk1,goN,walk1}},						 
+ {0x51, 10, {walk1,walk1,walk1,walk1,walk1,walk1,walk1,walk1}},	   
+ {0x89, 20, {on1,walk1,on1,walk1,on1,walk1,on1,walk1}},						 
+ {0x89, 20, {on4,walk2,on4,walk2,on4,walk2,on4,walk2}},						 
  {0x89,  2, {off1,walk1,off1,walk1,off1,walk1,off1,walk1}},
  {0x89,  2, {off2,walk1,off2,walk1,off2,walk1,off2,walk1}},
  {0x89,	 2, {off3,walk1,off3,walk1,off3,walk1,off3,walk1}},
@@ -132,43 +132,42 @@ int main(void){
 	
 	SysTick_Init();   
 	
-  TExaS_Init(SW_PIN_PE210, LED_PIN_PB543210); // activate grader and set system clock to 80 MHz
+  	TExaS_Init(SW_PIN_PE210, LED_PIN_PB543210); // activate grader and set system clock to 80 MHz
   
 	volatile unsigned long delay;
 	SYSCTL_RCGC2_R |= 0x31;      			// 1) A E F
-  delay = SYSCTL_RCGC2_R; 
+  	delay = SYSCTL_RCGC2_R; 
   
 	//Turn on clock for Ports A, E, and F
-	SYSCTL_RCGCGPIO_R 	|= 0x31;
+	SYSCTL_RCGCGPIO_R 		|= 0x31;
 	delay = SYSCTL_RCGCGPIO_R;
 	
 	//Initialize PortE
 	GPIO_PORTE_DIR_R		&= ~0x07; 
-	GPIO_PORTE_AFSEL_R	&= 0x00;
+	GPIO_PORTE_AFSEL_R		&= 0x00;
 	GPIO_PORTE_DEN_R		|= 0x07;
 	//GPIO_PORTE_AMSEL_R  &= 0x00;
 	//Initialize PortA
-	GPIO_PORTA_DIR_R  	|= 0xFC;
-	GPIO_PORTA_AFSEL_R 	&= ~0xFC;
+	GPIO_PORTA_DIR_R  		|= 0xFC;
+	GPIO_PORTA_AFSEL_R 		&= ~0xFC;
 	GPIO_PORTA_DEN_R 		|= 0xFC;
 	//GPIO_PORTA_AMSEL_R  &= 0x00;
 	//Initialize PortF
 	GPIO_PORTF_DIR_R 		|= 0x0A;
-	GPIO_PORTF_AFSEL_R	&= ~0x0A;
+	GPIO_PORTF_AFSEL_R		&= ~0x0A;
 	GPIO_PORTF_DEN_R 		|= 0x0A;  
 	//GPIO_PORTF_AMSEL_R  &= 0x00;
   
-  S = goN;  
+	S = goN;  
   
-	
-  EnableInterrupts();
+	EnableInterrupts();
   while(1){
-    PA72		=  ((FSM[S].Out & 0x3F)<<2);              // Set Traffic LEDs
-		PF3 		=	 ((FSM[S].Out & 0x80)>>4);              // Set Walk LEDs 
-		PF1     =  ((FSM[S].Out & 0x40)>>5);              // Set Don't Walk LEDs
-    cDelay(FSM[S].Time);															// Implement State Delay
-    Input = (GPIO_PORTE_DATA_R & 0x07);               // Read Sensors
-    S = FSM[S].Next[Input];
+        PA72 = ((FSM[S].Out & 0x3F)<<2);              // Set Traffic LEDs
+	PF3  = ((FSM[S].Out & 0x80)>>4);              // Set Walk LEDs 
+	PF1  = ((FSM[S].Out & 0x40)>>5);              // Set Don't Walk LEDs
+    	cDelay(FSM[S].Time);															// Implement State Delay
+    	Input = (GPIO_PORTE_DATA_R & 0x07);               // Read Sensors
+    	S = FSM[S].Next[Input];
   }
 }
 
