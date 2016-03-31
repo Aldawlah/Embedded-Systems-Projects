@@ -36,8 +36,8 @@ int main(void){
 	
   while(1){
 		
-		uint32_t Result = ((~PE5>>3) & (~PE4>>2) & (~PE3>>1));
-		PE2 = Result;
+	uint32_t Result = ((~PE5>>3) & (~PE4>>2) & (~PE3>>1));
+	PE2 = Result;
 		
   }
 	
