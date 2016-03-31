@@ -55,11 +55,11 @@ Start LDR R0,= SYSCTL_RCGCGPIO_R
 			  
 	  LDR  R0,= GPIO_PORTE_DATA_R
 loop  
-      LDR  R1, [R0]
+      	  LDR  R1, [R0]
 	  
 	  
 	  AND  R2, #0
-      AND  R3, #0
+      	  AND  R3, #0
 	  AND  R4, #0
 	  
 	  EOR  R1, #0x38
