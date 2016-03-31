@@ -1,11 +1,5 @@
 ; LCD.s
-;<<<<<<< .mine
-; Student names: Kaela Todd
-;||||||| .r23012
-; Student names: change this to your names or look very silly
-;=======
 ; Student names: Kaela Todd and Megan Cooper
-;>>>>>>> .r23023
 ; Last modification date: change this to the last modification date or look very silly
 
 ; Runs on LM4F120/TM4C123
@@ -25,7 +19,7 @@
 ; VCC (pin 2) connected to +3.3 V
 ; Gnd (pin 1) connected to ground
 
-GPIO_PORTA_DATA_R		EQU		0x400043FC
+GPIO_PORTA_DATA_R	EQU	0x400043FC
 DC                      EQU  	0x40004100
 DC_COMMAND              EQU   	0
 DC_DATA                 EQU   	0x40
@@ -35,7 +29,7 @@ SSI_SR_RNE              EQU   	0x00000004  ; SSI Receive FIFO Not Empty
 SSI_SR_BSY              EQU   	0x00000010  ; SSI Busy Bit
 SSI_SR_TNF              EQU   	0x00000002  ; SSI Transmit FIFO Not Full
 
-	  EXPORT   	writecommand
+      EXPORT   	writecommand
       EXPORT   	writedata
 
       AREA    |.text|, CODE, READONLY, ALIGN=2
@@ -66,7 +60,7 @@ SSI_SR_TNF              EQU   	0x00000002  ; SSI Transmit FIFO Not Full
 ; Assumes: SSI0 and port A have already been initialized and enabled
 writecommand
 ;1) Read SSI0_SR_R and check bit 4,
-CHECK	LDR 	R2, =SSI0_SR_R  
+CHECK		LDR 	 	R2, =SSI0_SR_R  
 		LDR		R1, [R2]
 		AND		R2, R1, #SSI_SR_BSY
 		CMP		R2, #0
@@ -80,13 +74,13 @@ CHECK	LDR 	R2, =SSI0_SR_R
 		LDR		R2, =SSI0_DR_R
 		STR		R0, [R2]
 ;5) Read SSI0_SR_R and check bit 4, 
-CHECK2	LDR 	R2, =SSI0_SR_R 
+CHECK2		LDR 		R2, =SSI0_SR_R 
 		LDR		R1, [R2]
 		AND		R2, R1, #SSI_SR_BSY
 		CMP		R2, #0
 ;6) If bit 4 is high, loop back to step 5 (wait for BUSY bit to be low)
 		BNE		CHECK2
-		BX  	LR                          ;   return
+		BX  		LR                          ;   return
 
 ; This is a helper function that sends an 8-bit data to the LCD.
 ; Input: R0  8-bit data to transmit
@@ -94,7 +88,7 @@ CHECK2	LDR 	R2, =SSI0_SR_R
 ; Assumes: SSI0 and port A have already been initialized and enabled
 writedata
 ;1) Read SSI0_SR_R and check bit 1, 
-CHECK3	LDR 	R2, =SSI0_SR_R  
+CHECK3		LDR 		R2, =SSI0_SR_R  
 		LDR		R1, [R2]
 		AND		R2, R1, #0x02
 		CMP		R2, #0
@@ -107,7 +101,7 @@ CHECK3	LDR 	R2, =SSI0_SR_R
 ;4) Write the 8-bit data to SSI0_DR_R
 		LDR		R2, =SSI0_DR_R
 		STR		R0, [R2]    
-		BX  	LR                          ;   return
+		BX  		LR                          ;   return
 
 
 ;***************************************************
