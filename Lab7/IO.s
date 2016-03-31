@@ -18,7 +18,7 @@
         EXPORT  	IO_Init
         EXPORT  	IO_Touch
         EXPORT  	IO_HeartBeat
-		IMPORT		Delay1ms
+	IMPORT		Delay1ms
 
 GPIO_PORTF_DATA_R  EQU 0x400253FC
 GPIO_PORTF_DIR_R   EQU 0x40025400
@@ -30,18 +30,18 @@ GPIO_PORTF_CR_R    EQU 0x40025524
 GPIO_PORTF_AMSEL_R EQU 0x40025528
 GPIO_PORTF_PCTL_R  EQU 0x4002552C
 GPIO_LOCK_KEY      EQU 0x4C4F434B  ; Unlocks the GPIO_CR register
-PF0       EQU 0x40025004
-PF1       EQU 0x40025008
-PF2       EQU 0x40025010
-PF3       EQU 0x40025020
-PF4       EQU 0x40025040
-LEDS      EQU 0x40025038
-RED       EQU 0x02
-BLUE      EQU 0x04
-GREEN     EQU 0x08
-SWITCHES  EQU 0x40025044
-SW1       EQU 0x10                 ; on the left side of the Launchpad board
-SW2       EQU 0x01                 ; on the right side of the Launchpad board
+PF0       	   EQU 0x40025004
+PF1       	   EQU 0x40025008
+PF2       	   EQU 0x40025010
+PF3       	   EQU 0x40025020
+PF4       	   EQU 0x40025040
+LEDS      	   EQU 0x40025038
+RED        	   EQU 0x02
+BLUE      	   EQU 0x04
+GREEN       	   EQU 0x08
+SWITCHES   	   EQU 0x40025044
+SW1       	   EQU 0x10                 ; on the left side of the Launchpad board
+SW2       	   EQU 0x01                 ; on the right side of the Launchpad board
 SYSCTL_RCGCGPIO_R  EQU 0x400FE608
     
         AREA    |.text|, CODE, READONLY, ALIGN=2
@@ -116,7 +116,7 @@ IO_HeartBeat
 IO_Touch
 ; Loops Until switch is Released
 		LDR R0,= PF4
-release	LDR R1, [R0]
+release		LDR R1, [R0]
 		CMP R1, #0x00
 		BNE release
 ; Implements a 62ms long delay
@@ -129,7 +129,7 @@ wait
 		SUBS R1, #1
 		BNE  Subt
 ; Loops until switch is Touched
-touch	LDR R1, [R0]
+touch		LDR R1, [R0]
 		CMP R1, #0x10
 		BNE touch		
 ; Implements a 62ms long delay
