@@ -32,27 +32,27 @@ x 		EQU 	4
 ;Allocate the stack for local variable
 		SUB 	SP, #8
 		MOV     R12, SP
-		MOV		R3, #0
+		MOV	R3, #0
 ;Store local variable to the stack
-    	MOV		R2, #10
+    	        MOV	R2, #10
 		STR     R2, [R12,#x]
 		
-loop1	MOV		R1, R0
+loop1	        MOV	R1, R0
 		LDR     R2, [R12,#x]
 		UDIV	R0, R2
-		MUL		R2, R0, R2
+		MUL	R2, R0, R2
 		SUBS	R2, R1, R2
 		PUSH	{R2,R4}
-		ADD		R3, #1
-		CMP		R0, #0
-		BNE		loop1
-loop2	POP		{R0,R4}
-		ADD		R0, #0x30
+		ADD	R3, #1
+		CMP	R0, #0
+		BNE	loop1
+loop2		POP	{R0,R4}
+		ADD	R0, #0x30
 		PUSH	{LR,R3}
-		BL		ST7735_OutChar
-		POP		{LR,R3}
+		BL	ST7735_OutChar
+		POP	{LR,R3}
 		SUBS	R3, #1
-		BNE		loop2
+		BNE	loop2
 		ADD     SP, #8
 		BX  	LR
 ;* * * * * * * * End of LCD_OutDec * * * * * * * *
@@ -70,69 +70,69 @@ loop2	POP		{R0,R4}
 ;       R0>9999, then output "*.*** "
 ; Invariables: This function must not permanently modify registers R4 to R11
 LCD_OutFix
-		MOV		R1, #9999
-		CMP		R0, R1
+		MOV	R1, #9999
+		CMP	R0, R1
 ;Branches to Print *.*** if higher that 9999
-		BHI		OVER
-		MOV		R1,#1000
-		MOV		R2,R0; input in R2
+		BHI	OVER
+		MOV	R1,#1000
+		MOV	R2,R0; input in R2
 		UDIV	R0,R1; R0= R0/1000
-		MUL		R1,R0; R1= 1000*R0
+		MUL	R1,R0; R1= 1000*R0
 		SUBS	R2,R1; R2=LAST THREE DIGITS
-		ADD		R0, #0x30
+		ADD	R0, #0x30
 		PUSH	{LR,R2}
 ;Prints first digit and "."
-		BL		ST7735_OutChar
-		MOV		R0, #0x2E
-		BL		ST7735_OutChar
-		POP		{LR,R2}
-		MOV		R1, #100
+		BL	ST7735_OutChar
+		MOV	R0, #0x2E
+		BL	ST7735_OutChar
+		POP	{LR,R2}
+		MOV	R1, #100
 		UDIV	R0, R2, R1; R0=R2/100
-		MUL		R1,R0; R1= 100*R0
+		MUL	R1,R0; R1= 100*R0
 		SUBS	R2,R1;R2=LAST TWO DIGITS
-		ADD		R0, #0x30
+		ADD	R0, #0x30
 ;Prints second digit
 		PUSH	{LR,R2}
-		BL		ST7735_OutChar
-		POP		{LR,R2}
-		MOV		R1, #10
+		BL	ST7735_OutChar
+		POP	{LR,R2}
+		MOV	R1, #10
 		UDIV	R0, R2, R1; R0=R2/10
-		MUL		R1,R0; R1= 10*R0
+		MUL	R1,R0; R1= 10*R0
 		SUBS	R2,R1;R2= LAST DIGIT
-		ADD		R0, #0x30
+		ADD	R0, #0x30
 ;Prints third digit
 		PUSH	{LR,R2}
-		BL		ST7735_OutChar
-		POP		{LR,R2}
-		MOV		R0,R2
-		ADD		R0, #0x30
+		BL	ST7735_OutChar
+		POP	{LR,R2}
+		MOV	R0,R2
+		ADD	R0, #0x30
 ;Prints fourth/last digit
 		PUSH	{LR,R2}
-		BL		ST7735_OutChar
-		POP		{LR,R2}
+		BL	ST7735_OutChar
+		POP	{LR,R2}
 		BX   	LR
 ;Prints *.*** to the display
-OVER	MOV		R0, #0x2A
+OVER		MOV	R0, #0x2A
 		PUSH	{LR,R2}
-		BL		ST7735_OutChar
-		POP		{LR,R2}
-		MOV		R0, #0x2E
+		BL	ST7735_OutChar
+		POP	{LR,R2}
+		MOV	R0, #0x2E
 		PUSH	{LR,R2}
-		BL		ST7735_OutChar
-		POP		{LR,R2}
-		MOV		R0, #0x2A
+		BL	ST7735_OutChar
+		POP	{LR,R2}
+		MOV	R0, #0x2A
 		PUSH	{LR,R2}
-		BL		ST7735_OutChar
-		POP		{LR,R2}
-		MOV		R0, #0x2A
+		BL	ST7735_OutChar
+		POP	{LR,R2}
+		MOV	R0, #0x2A
 		PUSH	{LR,R2}
-		BL		ST7735_OutChar
-		POP		{LR,R2}
-		MOV		R0, #0x2A
+		BL	ST7735_OutChar
+		POP	{LR,R2}
+		MOV	R0, #0x2A
 		PUSH	{LR,R2}
-		BL		ST7735_OutChar
-		POP		{LR,R2}
-		BX		LR
+		BL	ST7735_OutChar
+		POP	{LR,R2}
+		BX	LR
 		ALIGN
 ;* * * * * * * * End of LCD_OutFix * * * * * * * *
 
